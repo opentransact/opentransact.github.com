@@ -1,0 +1,63 @@
+// This import applies a global reset to any page that imports this stylesheet.
+@import blueprint/reset.sass
+// To configure blueprint, edit the partials/base.sass file.
+@import partials/base.sass
+@import partials/typography.sass
+
+@import blueprint/modules/grid.sass
+@import blueprint/modules/utilities.sass
+@import compass/utilities.sass
+
+@import partials/rounded.sass
+@import partials/buttons.sass
++clean-baseline
++blueprint-utilities
++blueprint-grid
+
+body
+  +normal-text
+  #container
+    +container
+  header, footer
+    +column(!blueprint_grid_columns)
+    nav
+      float: right
+  header
+    margin-bottom: 2em
+    #logo
+      font-size: 40px
+      a
+        +hover-link
+  footer
+    margin-top: 3em
+  #content
+    +column(!blueprint_grid_columns,true)
+
+  nav ul, footer ul
+    margin: 1em 0
+    +horizontal-list
+    li
+      border-left: 1px solid #aaa
+      a
+        color: #aaa
+        +hover-link      
+      &.first
+        border-left: none
+.big-box
+  +rounded
+  
+  font-size: 200%
+  background: #eee
+  padding: 1em
+  blockquote
+    +diamond
+    background: white
+    margin: 0
+    padding: 0.5em
+    +prose
+    margin-bottom: 1em
+    
+  h3
+    font-size: 70%
+    font-weight: bold
+    margin: 0

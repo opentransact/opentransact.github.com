@@ -1,0 +1,57 @@
+
+=rounded(!size=0.5em)
+  border-radius = !size
+  -webkit-border-radius = !size
+  -moz-border-radius = !size
+
+=rounded-top-left(!size=0.5em)
+  border-top-left-radius = !size
+  -webkit-border-top-left-radius = !size
+  -moz-border-radius-topleft = !size
+
+=rounded-bottom-left(!size=0.5em)
+  border-bottom-left-radius = !size
+  -webkit-border-bottom-left-radius = !size
+  -moz-border-radius-bottomleft = !size
+
+=rounded-top-right(!size=0.5em)
+  border-top-right-radius = !size
+  -webkit-border-top-right-radius = !size
+  -moz-border-radius-topright = !size
+
+=rounded-bottom-right(!size=0.5em)
+  border-bottom-right-radius = !size
+  -webkit-border-bottom-right-radius = !size
+  -moz-border-radius-bottomright = !size
+
+  
+=arounded(!size=0.5em)
+  +rounded-top-left(!size/2)
+  +rounded-bottom-left(!size)
+  +rounded-top-right(!size)
+  +rounded-bottom-right(!size/2)
+  
+=left-rounded(!size=0.5em)
+  +rounded-top-left(!size/2)
+  +rounded-bottom-left(!size)
+
+=right-rounded(!size=0.5em)
+  +rounded-top-right(!size/2)
+  +rounded-bottom-right(!size)
+
+=diamond(!size=0.5em)
+  +rounded-top-left(!size)
+  +rounded-bottom-right(!size)
+
+=tag-rounded(!size=1em)
+  +rounded-top-left(!size)
+  +rounded-bottom-left(!size)
+  +rounded-top-right(!size/4)
+  +rounded-bottom-right(!size/4)
+  
+=project-rounded(!size=0.5em)
+  +rounded-top-left(!size)
+  +rounded-bottom-left(!size/4)
+  +rounded-top-right(!size)
+  +rounded-bottom-right(!size/4)
+
