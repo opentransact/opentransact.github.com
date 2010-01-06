@@ -1,0 +1,22 @@
+---
+title: Videos
+layout: default
+---
+
+h3. "Simple Website Payments":http://www.opensourcecurrency.org/2009/07/stupid-currency-tricks-opentransact.html
+
+<object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/VvlPTPUhHGU&color1=0xb1b1b1&color2=0xcfcfcf&hl=en_US&feature=player_embedded&fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowScriptAccess" value="always"></param><embed src="http://www.youtube.com/v/VvlPTPUhHGU&color1=0xb1b1b1&color2=0xcfcfcf&hl=en_US&feature=player_embedded&fs=1" type="application/x-shockwave-flash" allowfullscreen="true" allowScriptAccess="always" width="425" height="344"></embed></object>
+
+"Tom":http://www.opensourcecurrency.org/ shows how to create a simple e-commerce payment using OpenTransact and the "NuBux":http://nubux.heroku.com reference implementation.
+
+h3. "Integrating OpenTransact in OS Currency":http://www.opensourcecurrency.org/2009/07/stupid-currency-tricks-opentransact_27.html
+
+<object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/uiakCvGXMZQ&color1=0xb1b1b1&color2=0xcfcfcf&hl=en_US&feature=player_embedded&fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowScriptAccess" value="always"></param><embed src="http://www.youtube.com/v/uiakCvGXMZQ&color1=0xb1b1b1&color2=0xcfcfcf&hl=en_US&feature=player_embedded&fs=1" type="application/x-shockwave-flash" allowfullscreen="true" allowScriptAccess="always" width="425" height="344"></embed></object>
+
+This time "Tom":http://www.opensourcecurrency.org/ shows how he made "OSCurrency":http://github.com/austintimeexchange/oscurrency/tree/edge OpenTransact compliant.
+
+h3. "CapCard: OpenTransact with OAuth":http://www.opensourcecurrency.org/2009/10/capcard-opentransact-with-oauth.html
+
+<embed src="http://blip.tv/play/AYGk%2BQsC" type="application/x-shockwave-flash" width="480" height="372" allowscriptaccess="always" allowfullscreen="true"></embed> 
+
+Here "Tom":http://www.opensourcecurrency.org/ shows how he made demonstrates connecting OpenTransact over OAuth using "CapCard":http://capcard.heroku.com/ and "OSCurrency":http://github.com/austintimeexchange/oscurrency/tree/edge.
