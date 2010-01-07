@@ -1,0 +1,68 @@
+---
+title: Use Cases
+layout: default
+---
+
+OpenTransact supports many different use cases. Here are some common ones:
+
+h3. Basic Transfer/Payment
+
+Strictly speaking this isn't part of the standard, but every Asset Provider needs a simple interface like this for basic transfers.
+
+User needs to transfer funds to another account holder of the same asset type.
+
+!/images/usecases/basic.png!
+
+# logs into Asset site
+# clicks Transfer/Pay button
+# enters recipient, amount and description
+# presses pay button
+# funds are transfered to recipient
+
+h3. Simple Website Payment
+
+User makes a one off purchase on a website. Similar to PayPal payments.
+
+1. User hits checkout button on website and is presented with checkout screen:
+
+!/images/usecases/simple_website_payment.png!
+
+2. User selects a payment type from one of websites supported providers. The merchant may have a different price depending on the currency type.
+
+3. User hits "Pay" button and is redirected to asset providers payment page displaying a payment confirmation page with amount, description and recipient from checkout screen
+
+!/images/usecases/simple_website_payment_confirmation.png!
+
+User presses confirm payment button and funds are transfered to merchants account and user is redirected back to merchants web site.
+
+!/images/usecases/simple_website_payment_thankyou.png!
+
+
+h3. Subscription Payment
+
+User subscribes to a web service paying $19.99/month.
+
+1. User hits signup button on service, enters personal details and selects plan.
+
+2. User is presented with payment screen:
+
+!/images/usecases/subscription.png!
+
+3. User selects a payment type (Currency) and hits "Pay"
+
+4. Behind the scenes the web service creates an "OAuth":http://oauth.net request token on the selected currency's server. Requesting a limit of $19.99 and frequency of 1 transaction/month.
+
+4. Web service redirects user to OAuth token authorization page on Currency's server, where User is asked if he/she wants to authorize web service to transfer $19.99/month:
+
+!/images/usecases/subscription_confirmation.png!
+
+5. User hits Allow button and is redirected back to web services thank you page:
+
+!/images/usecases/subscription_thankyou.png!
+
+6. In the background web service exchanges request token for access token and stores it in database.
+
+7. Once a month web service uses OpenTransact REST API to create a transaction to them selves for $20 using stored access token
+
+
+For more see the "Use Cases Wiki page":http://wiki.github.com/opentransact/opentransact/use-cases.

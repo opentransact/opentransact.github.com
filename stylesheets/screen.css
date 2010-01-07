@@ -396,11 +396,10 @@ body #container { width: 800px; margin: 0 auto; overflow: hidden; display: inlin
 body #container { display: block; }
 body header, body footer { display: inline; float: left; margin-right: 10px; width: 800px; }
 * html body header, * html body footer { overflow-x: hidden; }
-body header nav, body footer nav { float: right; }
 body header { margin-bottom: 2em; }
+body header nav { float: right; }
 body header #logo { font-size: 40px; }
-body header #logo a { text-decoration: none; }
-body header #logo a:hover { text-decoration: underline; }
+body header #logo a { color: inherit; text-decoration: inherit; cursor: inherit; }
 body footer { margin-top: 3em; }
 body #content { display: inline; float: left; margin-right: 0; width: 800px; }
 * html body #content { overflow-x: hidden; }
