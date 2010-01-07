@@ -413,6 +413,7 @@ body nav ul li a, body footer ul li a { color: #aaa; text-decoration: none; }
 body nav ul li a:hover, body footer ul li a:hover { text-decoration: underline; }
 body nav ul li.first, body footer ul li.first { border-left: none; }
 
-.big-box { border-radius: 0.5em; -webkit-border-radius: 0.5em; -moz-border-radius: 0.5em; font-size: 200%; background: #eee; padding: 1em; }
+.big-box { border-radius: 0.5em; -webkit-border-radius: 0.5em; -moz-border-radius: 0.5em; font-size: 120%; background: #eee; padding: 1em; }
 .big-box blockquote { border-top-left-radius: 0.5em; -webkit-border-top-left-radius: 0.5em; -moz-border-radius-topleft: 0.5em; border-bottom-right-radius: 0.5em; -webkit-border-bottom-right-radius: 0.5em; -moz-border-radius-bottomright: 0.5em; background: white; margin: 0; padding: 0.5em; font-family: Georgia, serif; margin-bottom: 1em; }
-.big-box h3 { font-size: 70%; font-weight: bold; margin: 0; }
+.big-box pre { display: block; padding: 1em; background: #222; color: #eee; }
+.big-box pre .param { color: #afa; }

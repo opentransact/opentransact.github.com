@@ -4,8 +4,13 @@ layout: default
 ---
 
 <div class="big-box">
-  <blockquote>"OAuth signed HTTP POST of to, amount, memo to asset url. From account inferred by oauth_token."</blockquote>
-  <h3>A financial transaction standard in 94 characters</h3>
+  <h3>The worlds simplest spec for financial transactions</h3>  
+  <pre><code>POST <span title="Each financial service (asset) has a unique url." class="param">/transactions/usd</span> HTTP/1.1
+Authorization: OAuth ... <span title="OAuth Token is linked to Payers account" class="param">oauth_token="ad180jjd733klru7"</span>, ...
+Content-length: 239
+
+<span title="Amount to pay" class="param">amount=10.00</span>&<span title="Payee account" class="param">to=you@example.com</span>&<span title="Optional description" class="param">memo=Milk</span></code></pre>
+
 </div>
 
 <p>
@@ -14,3 +19,9 @@ layout: default
 <p>
   OpenTransact aims to create the equivalent of the HTTP standard for financial transactions. It is based on established well known HTTP, REST and OAUTH standards. You can use the same standard and implementation code to handle everything from currency payments to loan issuance and stock trades.
 </p>
+
+<h3>How does it work?</h3>
+
+<p>See some of these common use cases:</p>
+
+<a href="/usecases.html#simple"><img src="/images/usecases/simple_website_payment.png"></a>

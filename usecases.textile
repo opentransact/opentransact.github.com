@@ -5,6 +5,8 @@ layout: default
 
 OpenTransact supports many different use cases. Here are some common ones:
 
+<a name="basic"></a>
+
 h3. Basic Transfer/Payment
 
 Strictly speaking this isn't part of the standard, but every Asset Provider needs a simple interface like this for basic transfers.
@@ -17,6 +19,8 @@ User needs to transfer funds to another account holder of the same asset type.
 2. User clicks Transfer/Pay button
 3. User enters recipient, amount and description and presses pay button
 4. funds are transfered to recipient
+
+<a name="simple"></a>
 
 h3. Simple Website Payment
 
@@ -36,6 +40,7 @@ User presses confirm payment button and funds are transfered to merchants accoun
 
 !/images/usecases/simple_website_payment_thankyou.png!
 
+<a name="subscription"></a>
 
 h3. Subscription Payment
 
