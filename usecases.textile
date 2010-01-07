@@ -13,11 +13,10 @@ User needs to transfer funds to another account holder of the same asset type.
 
 !/images/usecases/basic.png!
 
-# logs into Asset site
-# clicks Transfer/Pay button
-# enters recipient, amount and description
-# presses pay button
-# funds are transfered to recipient
+1. User logs into Asset site
+2. User clicks Transfer/Pay button
+3. User enters recipient, amount and description and presses pay button
+4. funds are transfered to recipient
 
 h3. Simple Website Payment
 
