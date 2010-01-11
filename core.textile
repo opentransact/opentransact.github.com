@@ -69,7 +69,7 @@ OAuth should form the core authentication and signature layer of the API.
 
 The OAuth protocol would automatically give us Transaction ID, Payer, Signature and a security layer.
 
-I protocol should use simple form based parameter encoding as it OAuth supports it well and it is supported by every single programming language out there.
+The OpenTransact protocol should use simple form based parameter based encoding as OAuth supports it well.
 
 h3. Transfer Asset
 
