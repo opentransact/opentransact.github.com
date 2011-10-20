@@ -22,7 +22,7 @@ User needs to transfer funds to another account holder of the same asset type.
 
 <a name="simple"></a>
 
-h3. Simple Website Payment
+h3. Transfer Request
 
 User makes a one off purchase on a website. Similar to PayPal payments.
 

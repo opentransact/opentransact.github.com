@@ -1,18 +1,19 @@
 ---
-title: 
+title:
 layout: default
 ---
 
 <div class="big-box">
-  <h3>The worlds simplest spec for financial transactions</h3>  
+  <h3>The worlds simplest spec for financial transactions</h3>
   <pre><code>POST <span title="Each financial service (asset) has a unique url." class="param">/transactions/usd</span> HTTP/1.1
-Authorization: OAuth ... <span title="OAuth Token is linked to Payers account" class="param">oauth_token="ad180jjd733klru7"</span>, ...
+Authorization: Bearer <span title="OAuth Token is linked to Payers account" class="param">ad180jjd733klru7</span>
 Content-length: 239
 
-<span title="Amount to pay" class="param">amount=10.00</span>&<span title="Payee account" class="param">to=you@example.com</span>&<span title="Optional description" class="param">memo=Milk</span></code></pre>
+<span title="Amount to pay" class="param">amount=10.00</span>&<span title="Payee account" class="param">to=you@example.com</span>&<span title="Optional description" class="param">note=Milk</span></code></pre>
 
 </div>
 
+<p><b><a href="/core.html">New Draft</a></b> We have started the work towards improving the standard.</p>
 <p>
   Payments and finance are today governed by lots of different incompatible complex legacy standards developed over the last 40 years. These standards make it hard to interoperate and innovate in the financial space.
 </p>
