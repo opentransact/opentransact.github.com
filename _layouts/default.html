@@ -2,18 +2,27 @@
 <html lang='en'>
   <head>
     <title>OpenTransact {{page.title}}</title>
-    <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
-    <!--[if IE]> 
-    <script src="javascripts/modernizr-1.1.min.js"></script>
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    
+
+    <!-- Le styles -->
+    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+      }
+    </style>
   </head>
   <body>
-    <div id='container'>
-      <header>
-        <nav>
-          <ul>
-            <li class="first"><a href="/">Home</a></li>
+    <div class="topbar">
+      <div class="fill">
+        <div class="container">
+          <a class="brand" href="#">OpenTransact</a>
+          <ul class="nav">
+            <li><a href="/">Home</a></li>
             <li><a href="/usecases.html">Use cases</a></li>
             <li><a href="/core.html">Spec</a></li>
             <li><a href="/videos.html">Videos</a></li>
@@ -21,17 +30,17 @@
               <a href="http://wiki.github.com/opentransact/opentransact/asset-provider-list">Providers</a>
             </li>
           </ul>
-        </nav>
-        <div id="logo">
-          <a href="/"><img src="/images/logo.png"/> OpenTransact</a>
         </div>
-      </header>
-      <div id='content'>
-        {{content}}
       </div>
+    </div>
+
+    <div class='container'>
+
+{{content}}
+
       <footer>
-        <nav>
-          <ul>
+        <nav class="clearfix">
+          <ul class='nav'>
             <li class="first">
               <a href='http://github.com/opentransact'>Code</a>
             </li>
@@ -41,12 +50,12 @@
             <li>
               <a href='http://wiki.github.com/opentransact/opentransact'>Wiki</a>
             </li>
-                      
+
           </ul>
         </nav>
-        
-        <p> &copy; 2009 Pelle Braendgaard, <a href="http://stakeventures.com">Stake Ventures
-        Inc.</a> and other contributors. Released under MIT License </p> 
+
+        <p class="clearfix" style="clear:both"> &copy; 2009-2011 Pelle Braendgaard, <a href="http://stakeventures.com">Stake Ventures
+        Inc.</a> and other contributors. Released under MIT License </p>
       </footer>
     </div>
     <script type="text/javascript">

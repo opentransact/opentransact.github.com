@@ -2,24 +2,102 @@
 title:
 layout: default
 ---
+<div class="hero-unit">
+  <h1>The worlds simplest spec for financial transactions</h1>
+  <p>
+    Payments and finance are today governed by lots of different incompatible complex legacy standards developed over the last 40 years. These standards make it hard to interoperate and innovate in the financial space.
+  </p>
+  <p><a class="btn primary large" href="http://groups.google.com/group/opentransact">Join the mailing list</a></p>
+</div>
+<p>
+  OpenTransact aims to create the equivalent of the HTTP standard for financial transactions. It is based on established well known HTTP, REST and OAUTH standards. You can use the same standard and implementation code to handle everything from currency payments to loan issuance and stock trades.
+</p>
+<div class='row'>
+  <div class="span5">
+    <h3>Transfer Request</h3>
+    <p>Request payment from a customer. All you have to do is create a link like below.</p>
+  </div>
 
-<div class="big-box">
-  <h3>The worlds simplest spec for financial transactions</h3>
-  <pre><code>POST <span title="Each financial service (asset) has a unique url." class="param">/transactions/usd</span> HTTP/1.1
+  <div class="span5">
+    <h3>Transfer Authorization</h3>
+    <p>
+      Request authorization to perform a payment from a customer. All you have to do is create a link like below.
+    </p>
+  </div>
+
+  <div class="span6">
+    <h3>Transfer</h3>
+    <p>An application has a previously issued OAuth token to perform delegated transfers on behalf of a user.</p>
+  </div>
+</div>
+
+<div class='row'>
+  <div class="span5">
+  <pre><code>http://pay.test/usd?<span title="Amount to pay" class="param">amount=10.00</span>&<span title="Payee account" class="param">to=you@example.com</span>&<span title="Optional description" class="param">note=Milk</span></code></pre>
+
+  <p><a class="btn" href="https://picomoney.com/devcredits?amount=10&to=test@test.com&note=Just%20testing">Click to try</a></p>
+</div>
+
+<div class="span5">
+<pre><code>http://pay.test/usd?<span title="Amount to pay" class="param">amount=10.00</span>&<span title="Payee account" class="param">to=you@example.com</span>&<span title="Optional description" class="param">note=Milk</span>&<span title="Where to redirect to after authorization is made." class="param">redirect_uri=http://site.com/callback</span>&<span title="OAuth 2 client id" class="param">client_id=1234</span></code></pre>
+<p>
+  If user authorizes it payment is not performed immediately, rather an OAuth token is issued to you which allows you to charge when ready.
+</p>
+</div>
+
+  <div class="span6">
+<pre><code>POST <span title="Each financial service (asset) has a unique url." class="param">/transactions/usd</span> HTTP/1.1
 Authorization: Bearer <span title="OAuth Token is linked to Payers account" class="param">ad180jjd733klru7</span>
 Content-length: 239
 
 <span title="Amount to pay" class="param">amount=10.00</span>&<span title="Payee account" class="param">to=you@example.com</span>&<span title="Optional description" class="param">note=Milk</span></code></pre>
-
+<p>
+  OAuth token is either authorized using a regular OAuth authorization request or through a Transfer Authorization.
+</p>
+</div>
 </div>
 
-<p><b><a href="/core.html">New Draft</a></b> We have started the work towards improving the standard.</p>
-<p>
-  Payments and finance are today governed by lots of different incompatible complex legacy standards developed over the last 40 years. These standards make it hard to interoperate and innovate in the financial space.
-</p>
-<p>
-  OpenTransact aims to create the equivalent of the HTTP standard for financial transactions. It is based on established well known HTTP, REST and OAUTH standards. You can use the same standard and implementation code to handle everything from currency payments to loan issuance and stock trades.
-</p>
+<div class='row'>
+  <div class="span5">
+    <h5>Use cases:</h5>
+    <ul>
+      <li>Simple shopping carts</li>
+      <li>Invoicing software</li>
+      <li>Donation</li>
+    </ul>
+    <p>
+      Merchants can integrate this into an existing site with no or little programming. See the <a href="/core.html#transfer-request-1" title="Transfer Request Spec">spec</a> for more details.
+    </p>
+
+  </div>
+
+  <div class="span5">
+    <h5>Use cases:</h5>
+    <ul>
+      <li>Advanced shopping carts</li>
+      <li>Exchanges</li>
+    </ul>
+    <p>
+      Some simple web programming skills are necessary. See the <a href="/core.html#transfer-authorization-1" title="Transfer Authorization Spec">spec</a> for more details.
+    </p>
+
+  </div>
+
+  <div class="span6">
+    <h5>Use cases:</h5>
+    <ul>
+      <li>Subscriptions</li>
+      <li>Mobile payments</li>
+      <li>Payment devices</li>
+    </ul>
+    <p>
+      Some simple web programming skills are necessary. See the <a href="/core.html#transfer-1" title="Transfer Spec">spec</a> for more details.
+    </p>
+
+  </div>
+</div>
+
+
 
 <h3>How does it work?</h3>
 
