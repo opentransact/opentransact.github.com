@@ -1,3 +1,4 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en"><head><title>OpenTransact Core</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="description" content="OpenTransact Core">
@@ -144,17 +145,20 @@
 <tr><td class="header">OpenTransact</td><td class="header">P. Braendgaard</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">PicoMoney Inc</td></tr>
 <tr><td class="header">Intended status: Informational</td><td class="header">N. Matake</td></tr>
-<tr><td class="header">Expires: April 21, 2012</td><td class="header">Cerego Japan Inc</td></tr>
+<tr><td class="header">Expires: July 13, 2012</td><td class="header">Cerego Japan Inc</td></tr>
 <tr><td class="header">&nbsp;</td><td class="header">T. Brown</td></tr>
-<tr><td class="header">&nbsp;</td><td class="header">October 19, 2011</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">D. Nicol</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">TipJar</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">January 10, 2012</td></tr>
 </table></td></tr></table>
-<h1><br />OpenTransact Core<br />draft-pelle-opentransact-core-00</h1>
+<h1><br />OpenTransact Core<br />draft-pelle-opentransact-core-02</h1>
 
 <h3>Abstract</h3>
 
 <p>
       This document specifies the OpenTransact standard for requesting and performing transfers of assets over the http protocol.
-
+      
 </p>
 <h3>Status of this Memo</h3>
 <p>
@@ -171,11 +175,11 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on April 21, 2012.</p>
+This Internet-Draft will expire on July 13, 2012.</p>
 
 <h3>Copyright Notice</h3>
 <p>
-Copyright (c) 2011 IETF Trust and the persons identified as the
+Copyright (c) 2012 IETF Trust and the persons identified as the
 document authors.  All rights reserved.</p>
 <p>
 This document is subject to BCP 78 and the IETF Trust's Legal
@@ -202,6 +206,8 @@ Asset Service<br />
 Transaction URL<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#example-of-asset-services">2.1.3.</a>&nbsp;
 Example of Asset Services<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#derivative-assets">2.1.4.</a>&nbsp;
+Derivative Assets<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#roles">2.2.</a>&nbsp;
 Roles<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#transfer">2.3.</a>&nbsp;
@@ -234,9 +240,15 @@ Response<br />
 Errors<br />
 <a href="#transfer-authorization-1">4.</a>&nbsp;
 Transfer Authorization<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#response-1">4.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#validity-duration">4.1.</a>&nbsp;
+Validity duration<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#validity-request-parameter">4.1.1.</a>&nbsp;
+Validity Request Parameter<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#validity-request-error">4.1.2.</a>&nbsp;
+Validity Request Error<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#response-1">4.2.</a>&nbsp;
 Response<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#errors-1">4.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#errors-1">4.3.</a>&nbsp;
 Errors<br />
 <a href="#transfer-1">5.</a>&nbsp;
 Transfer<br />
@@ -246,7 +258,13 @@ Response<br />
 Receipt<br />
 <a href="#asset-meta-data">7.</a>&nbsp;
 Asset Meta data<br />
-<a href="#rfc.references1">8.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#transaction-history">7.1.</a>&nbsp;
+Transaction history<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#derivative-assets-1">7.2.</a>&nbsp;
+Derivative assets<br />
+<a href="#security-considerations">8.</a>&nbsp;
+Security Considerations<br />
+<a href="#rfc.references1">9.</a>&nbsp;
 Normative References<br />
 <a href="#rfc.authors">&#167;</a>&nbsp;
 Authors' Addresses<br />
@@ -267,7 +285,7 @@ Introduction</h3>
 
 <p>The goal is to develop a very simple low level standard for transferring an amount of an asset from one account to another.
 </p>
-<p>Most payment systems and existing standards use the messaging paradigm for historical reasons. OpenTransact specifically rejects the message paradigm and prefers the restful resource approach as used on the web with URL&rsquo;s and HTTP at it&rsquo;s core.
+<p>Most payment systems and existing standards use the messaging paradigm for historical reasons. OpenTransact specifically rejects the message paradigm and prefers the RESTful (REpresentational State Transfer) resource approach as used on the web with URL&rsquo;s and HTTP at it&rsquo;s core.
 </p>
 <p>We aim to create a new standard from scratch ignoring all legacy systems, while leaving it flexible enough to allow applications built on top of it to deal with legacy systems.
 </p>
@@ -278,7 +296,9 @@ Introduction</h3>
 <a name="rfc.section.2.1"></a><h3>2.1.&nbsp;
 Assets</h3>
 
-<p>Within OpenTransact we use the accounting definition of the word &ldquo;Asset&rdquo; as anything of value. Eg.
+<p>Within OpenTransact we use the accounting definition of the word &ldquo;Asset&rdquo; to mean anything fungible about which one could make an accounting book entry.
+</p>
+<p>For example:
 </p>
 <p></p>
 <ul class="text">
@@ -296,7 +316,11 @@ Assets</h3>
 </li>
 <li>domain names
 </li>
-<li>physical products etc.
+<li>tons of sand
+</li>
+<li>general admission tickets to an event
+</li>
+<li>et cetera
 </li>
 </ul>
 
@@ -305,30 +329,30 @@ Assets</h3>
 <a name="rfc.section.2.1.1"></a><h3>2.1.1.&nbsp;
 Asset Service</h3>
 
-<p>An Asset Service is a service maintained by an organization to manage accounts of one asset. For money and other financial assets the Asset Service would normally be run by a Financial Service Provider of some type. However there are many types of assets that could be offered by non financial services.
+<p>An Asset Service is a service maintained by an organization to manage accounts of one asset. For money and other financial assets the Asset Service would normally be run by a Financial Service Provider of some type. Other types of assets are offered by non-financial services. The regulatory definition of &ldquo;financial&rdquo; is of course out of the scope of this document.
 </p>
 <a name="transaction-url"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.2.1.2"></a><h3>2.1.2.&nbsp;
 Transaction URL</h3>
 
-<p>Each Asset Service has a unique transaction URL. There is no need to get into details in the standard about application specific details like currency, card type, size, color etc.
+<p>Each Asset Service has a unique transaction URL. An informal convention is developing, but is out of the cope of this document. Guidance concerning the form of these URLs with regard to specific details like currency, card type, size, color MAY become available in a future Best Current Practices document.
 </p>
-<p>This transaction URL would follow basic REST practices.
+<p>The service available at the transaction URL MUST follow basic REST practices:
 </p>
 <p></p>
 <ul class="text">
-<li>A transaction URL should be a simple clean URL like http://eepay.com/transactions.
+<li>A transaction URL such as https://paymentsarewe.example.com/prwpoints MUST NOT contain query or fragment part.
+</li>
+<li>Loading the URL into a normal web browser should present a human readable description of the asset.
 </li>
 <li>A POST to the URL is used for creating a transaction transferring value.
-</li>
-<li>A GET to the URL from a normal html web browser should present a human readable description of the asset.
 </li>
 <li>A GET to the URL from a normal web browser with specific parameters becomes a payment request that the user can authorize.
 </li>
 <li>A GET to the URL in a machine readable form such as json returns meta data about the asset and optionally a list of transactions that the current user is allowed to see.
 </li>
-<li>Each transaction has a unique URL eg. http://epay.com/transactions/aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d.
+<li>Each transaction has a unique URL. This SHOULD be formed by appending a unique transaction identifier to the transaction URL, such as https://paymentsarewe.example.com/prwpoints/aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d.
 </li>
 </ul>
 
@@ -337,11 +361,11 @@ Transaction URL</h3>
 <a name="rfc.section.2.1.3"></a><h3>2.1.3.&nbsp;
 Example of Asset Services</h3>
 
-<p>Lets say it&rsquo;s an imaginary electronic currency asset provider eepay.com they only offer one asset type, their currency. So they would only have one transaction url:
+<p>Lets say it&rsquo;s an imaginary electronic currency asset provider eepay.example.net they only offer one asset type, their currency. So they would only have one transaction url:
 </p>
 <p></p>
 <ul class="text">
-<li>http://eepay.com/transactions
+<li>http://eepay.example.net/transactions
 </li>
 </ul>
 
@@ -349,21 +373,21 @@ Example of Asset Services</h3>
 </p>
 <p></p>
 <ul class="text">
-<li>http://eepay.com/transactions/usd
+<li>http://eepay.example.net/transactions/usd
 </li>
-<li>http://eepay.com/transactions/euro
+<li>http://eepay.example.net/transactions/euro
 </li>
 </ul>
 
-<p>If a larger existing bank offered various kinds of services each one would have it&rsquo;s own URL:
+<p>A bank offering OT as an alternative to ACH service could have a tranaction URL for each of the currencies in which it offers checking accounts. The details of interbank settlements are out of the scope of this document.
 </p>
 <p></p>
 <ul class="text">
-<li>http://megabank.com/current
+<li>http://coolbank.example.com/current
 </li>
-<li>http://megabank.com/savings
+<li>http://coolbank.example.com/savings
 </li>
-<li>http://megabank.com/bonds/mortgage
+<li>http://coolbank.example.com/bonds/mortgage
 </li>
 </ul>
 
@@ -371,29 +395,54 @@ Example of Asset Services</h3>
 </p>
 <p></p>
 <ul class="text">
-<li>http://fidelify.com/funds/sp500
+<li>http://fidelify.example.com/funds/sp500
 </li>
-<li>http://fidelify.com/funds/emergingmarkets
+<li>http://fidelify.example.com/funds/emergingmarkets
 </li>
 </ul>
 
-<p>A broker could actually also implement an OpenTransact API and have a different URL for each symbol eg:
+<p>With relaxation of current regulations on brokerage transactions all going through markets, a broker (rather, a stock market) could implement an OpenTransact API and have a different URL for each symbol.
 </p>
 <p></p>
 <ul class="text">
-<li>http://feetrade.com/trade/AAPL
+<li>http://nyex.example.com/trade/AAPL
 </li>
-<li>http://feetrade.com/trade/EBAY
+<li>http://nyex.example.com/trade/EBAY
 </li>
 </ul>
 
-<p>This would allow them to create their own internal market.
+<p>This would ease the barrier to registered securities being used directly as money.
 </p>
 <p>If we let the URL do the describing, there are many different possibilities. This allows support for all manners of asset types.
 </p>
 <p>All the above examples are fungible assets. In general it is best practice that one item of value for one asset is fungible for one another.
 </p>
 <p>For unique items such as domain names, property titles and diamonds that are unique and infungible, we can still create asset urls for each item, but only accept transfer amounts of 1.
+</p>
+<p>All the above examples are fungible assets.
+</p>
+<p>For unique items such as domain names, property titles and diamonds that are unique and infungible, we may define a separate currency for the item representing partial ownership. The legal framework for defining the resulting partnerships and their governance is out of scope of this document.
+</p>
+<a name="derivative-assets"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.1.4"></a><h3>2.1.4.&nbsp;
+Derivative Assets</h3>
+
+<p>A Derivative asset is an asset that is based on the current asset but provides different semantics and business rules.
+</p>
+<p>Examples:
+</p>
+<p></p>
+<ul class="text">
+<li>Reserves/Escrows
+</li>
+<li>Subscription services providing recurring billing
+</li>
+<li>Exchanges providing exchange of asset with another asset
+</li>
+</ul>
+
+<p>It is out of scope to define here exactly how these would work, but the OpenTransact community will build a list of recipes for how to implement these and may publish further drafts outlining specifics in the future.
 </p>
 <a name="roles"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -405,28 +454,28 @@ Roles</h3>
 <p></p>
 <ul class="text">
 <li>Asset provider
-
+  
 <ul class="text">
 <li>The entity providing or issuing the asset
 </li>
 </ul>
 </li>
 <li>Transferer
-
+  
 <ul class="text">
 <li>The entity transfering an amount of the asset
 </li>
 </ul>
 </li>
 <li>Transferee
-
+  
 <ul class="text">
 <li>The entity receiving an amount of the asset
 </li>
 </ul>
 </li>
 <li>3rd party application
-
+  
 <ul class="text">
 <li>An application performing a transfer on behalf of the Transferer
 </li>
@@ -484,7 +533,7 @@ Exchange Transaction</h3>
 </li>
 </ul>
 
-<p>There are as many different exchange mechanisms for create exchanges as there are exchange types. eg.
+<p>There are as many different exchange mechanisms for creating exchanges as there are exchange types.
 </p>
 <p></p>
 <ul class="text">
@@ -500,7 +549,7 @@ Exchange Transaction</h3>
 </li>
 </ul>
 
-<p>It is outside the scope for OpenTransact to define every single type of exchange that is possible. However OpenTransact should be able to be a fundamental building block in building such systems. It should also integrate well with exchange systems that don&rsquo;t yet understand OpenTransact.
+<p>It is outside the scope for OpenTransact to define every single type of exchange that is possible. OpenTransact provides a fundamental building block in building such systems. It integrates well with exchange systems that don&rsquo;t yet understand OpenTransact.
 </p>
 <a name="exchanged-item-uri"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -521,7 +570,7 @@ Authorization</h3>
 <a name="rfc.section.2.7"></a><h3>2.7.&nbsp;
 Vocabulary</h3>
 
-<p>As part of OpenTransact we are creating a simple vocabulary of parameter names that can be used in various parts of the standard.
+<p>OpenTransact includes a standard list parameter names used in the GET and POST requests.
 </p>
 <p></p>
 <ul class="text">
@@ -563,9 +612,9 @@ Vocabulary</h3>
 </li>
 <li>asset=http://pay.me/usd
 </li>
-<li>from=bob@test.com
+<li>from=bob@test.example..com
 </li>
-<li>to=alice@test.com
+<li>to=alice@test.example..com
 </li>
 <li>note=Consulting on XYZ project
 </li>
@@ -578,7 +627,7 @@ Vocabulary</h3>
 <a name="rfc.section.2.8"></a><h3>2.8.&nbsp;
 Authentication</h3>
 
-<p>OpenTransact does not define any new authentication mechanisms, but relies on the Asset Provider&rsquo;s existing mechanisms for authenticating the Transferer and  OAuth 2.0 <a class='info' href='#OAuth.2.0'>[OAuth.2.0]<span> (</span><span class='info'>Hammer-Lahav, E., Ed., Recordon, D., and D. Hardt, &ldquo;OAuth 2.0 Authorization Protocol,&rdquo; Jul&nbsp;2011.</span><span>)</span></a> for authenticating 3rd party applications on behalf of the Transferer.
+<p>OpenTransact does not define any new authentication mechanisms, but relies on the Asset Provider&rsquo;s existing mechanisms for authenticating the Transferer and  OAuth 2.0 <a class='info' href='#I-D.ietf-oauth-v2-bearer'>[I&#8209;D.ietf&#8209;oauth&#8209;v2&#8209;bearer]<span> (</span><span class='info'>Jones, M., Hardt, D., and D. Recordon, &ldquo;The OAuth 2.0 Authorization Protocol: Bearer Tokens,&rdquo; December&nbsp;2011.</span><span>)</span></a> for authenticating 3rd party applications on behalf of the Transferer.
 </p>
 <a name="parameter-encoding"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -587,7 +636,9 @@ Parameter encoding</h3>
 
 <p>Since OpenTransact is designed to be simple to implement, the basic parameter encoding is URL form encoding.
 </p>
-<p>Any data responses should be in JSON format.
+<p>Data responses should be in JSON format.
+</p>
+<p>OpenTransact includes a standard for name strings and value ranges for use with the JSON objects returned from a request made to a compliant OT transaction URL.
 </p>
 <a name="extensions"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -618,9 +669,9 @@ Transfer Request</h3>
 
 <p>A Transfer Request consists of a GET to the Asset URL.
 </p><br /><hr class="insert" />
-<a name="get-usdtobillexamplecomamount10000notemilkredirecturihttpsitecomcallback-http11host-payme"></a>
+<a name="get-usdtobillexamplecomamount10000notemilkredirecturihttpsiteexamplecomcallback-http11host-payme"></a>
 <div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-GET /usd?to=bill@example.com&amp;amount=100.00&amp;note=Milk&amp;redirect_uri=http://site.com/callback HTTP/1.1
+GET /usd?to=bill@example.com&amp;amount=100.00&amp;note=Milk&amp;redirect_uri=http://site.example.com/callback HTTP/1.1
 Host: pay.me
 </pre></div><table border="0" cellpadding="0" cellspacing="2" align="center"><tr><td align="center"><font face="monaco, MS Sans Serif" size="1"><b>&nbsp;Figure&nbsp;1&nbsp;</b></font><br /></td></tr></table><hr class="insert" />
 
@@ -668,7 +719,7 @@ Response</h3>
 <a name="rfc.section.3.2"></a><h3>3.2.&nbsp;
 Errors</h3>
 
-<p>Error types use OAuth 2.0&rsquo;s error codes. <a class='info' href='#OAuth.2.0'>[OAuth.2.0]<span> (</span><span class='info'>Hammer-Lahav, E., Ed., Recordon, D., and D. Hardt, &ldquo;OAuth 2.0 Authorization Protocol,&rdquo; Jul&nbsp;2011.</span><span>)</span></a>
+<p>Error types use OAuth 2.0&rsquo;s error codes. <a class='info' href='#I-D.ietf-oauth-v2'>[I&#8209;D.ietf&#8209;oauth&#8209;v2]<span> (</span><span class='info'>Hammer-Lahav, E., Recordon, D., and D. Hardt, &ldquo;The OAuth 2.0 Authorization Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a>
 </p>
 <a name="transfer-authorization-1"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -677,13 +728,13 @@ Transfer Authorization</h3>
 
 <p>A Transfer Authorization consists of a GET to the Asset URL with a client_id.
 </p><br /><hr class="insert" />
-<a name="get-usdtobillexamplecomamount10000notemilkredirecturihttpsitecomcallbackclientid1234-http11host-payme"></a>
+<a name="get-usdtobillexamplecomamount10000notemilkredirecturihttpsiteexamplecomcallbackclientid1234-http11host-payme"></a>
 <div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
-GET /usd?to=bill@example.com&amp;amount=100.00&amp;note=Milk&amp;redirect_uri=http://site.com/callback&amp;client_id=1234 HTTP/1.1
+GET /usd?to=bill@example.com&amp;amount=100.00&amp;note=Milk&amp;redirect_uri=http://site.example.com/callback&amp;client_id=1234 HTTP/1.1
 Host: pay.me
 </pre></div><table border="0" cellpadding="0" cellspacing="2" align="center"><tr><td align="center"><font face="monaco, MS Sans Serif" size="1"><b>&nbsp;Figure&nbsp;2&nbsp;</b></font><br /></td></tr></table><hr class="insert" />
 
-<p>A Transfer Authorization is really a OAuth2 Authorization <a class='info' href='#OAuth.2.0'>[OAuth.2.0]<span> (</span><span class='info'>Hammer-Lahav, E., Ed., Recordon, D., and D. Hardt, &ldquo;OAuth 2.0 Authorization Protocol,&rdquo; Jul&nbsp;2011.</span><span>)</span></a> with a few extra payment related parameters.
+<p>A Transfer Authorization is really a OAuth2 Authorization <a class='info' href='#I-D.ietf-oauth-v2'>[I&#8209;D.ietf&#8209;oauth&#8209;v2]<span> (</span><span class='info'>Hammer-Lahav, E., Recordon, D., and D. Hardt, &ldquo;The OAuth 2.0 Authorization Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a> with a few extra payment related parameters.
 </p>
 <p>We use the following parameters from our common vocabulary. All fields are optional:
 </p>
@@ -699,9 +750,11 @@ Host: pay.me
 </li>
 <li><em>for</em> URI identifying the exchanged item.
 </li>
+<li><em>validity</em> A <a class='info' href='#ISO.8601.1988'>[ISO.8601.1988]<span> (</span><span class='info'>International Organization for Standardization, &ldquo;Data elements and interchange formats - Information interchange - Representation of dates and times,&rdquo; June&nbsp;1988.</span><span>)</span></a> <a href='http://en.wikipedia.org/wiki/ISO_8601#Durations'>duration</a> or <a href='http://en.wikipedia.org/wiki/ISO_8601#Time_intervals'>interval</a> (see below)
+</li>
 </ul>
 
-<p>OAuth2 related parameters. See <a class='info' href='#OAuth.2.0'>[OAuth.2.0]<span> (</span><span class='info'>Hammer-Lahav, E., Ed., Recordon, D., and D. Hardt, &ldquo;OAuth 2.0 Authorization Protocol,&rdquo; Jul&nbsp;2011.</span><span>)</span></a> section 5 for full details
+<p>OAuth2 related parameters. See <a class='info' href='#I-D.ietf-oauth-v2'>[I&#8209;D.ietf&#8209;oauth&#8209;v2]<span> (</span><span class='info'>Hammer-Lahav, E., Recordon, D., and D. Hardt, &ldquo;The OAuth 2.0 Authorization Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a> section 5 for full details
 </p>
 <p></p>
 <ul class="text">
@@ -713,27 +766,96 @@ Host: pay.me
 </li>
 <li><em>response_type</em> token or code REQUIRED
 </li>
-<li><em>expires_in</em> Request the amount of time in seconds this token should be valid
-</li>
 </ul>
 
 <p>When a user follows this link, the Asset Service should present the user with a form authorizing the payment.
 </p>
 <p>Note: Client can include OpenID Connect parameters.
 </p>
-<a name="response-1"></a><br /><hr />
+<a name="validity-duration"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.1"></a><h3>4.1.&nbsp;
+Validity duration</h3>
+
+<p>A client can request a specific validity length of the oauth token.
+</p>
+<p>The asset provider will assign a default expiration of the token if client doesn&rsquo;t specify a validity.
+</p>
+<p>A validity can be request which is either a fixed duration  or a repeating interval.
+</p>
+<p>For a fixed interval the amount SHOULD be guaranteed and reserved for the client.
+</p>
+<p>For a repeating interval the amount SHOULD be guaranteed for the first interval only.
+</p>
+<a name="validity-request-parameter"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1.1"></a><h3>4.1.1.&nbsp;
+Validity Request Parameter</h3>
+
+<p>The validity is requested using A ISO8601 <a href='http://en.wikipedia.org/wiki/ISO_8601#Durations'>duration</a>,  <a href='http://en.wikipedia.org/wiki/ISO_8601#Time_intervals'>interval</a> or <a href='http://en.wikipedia.org/wiki/ISO_8601#Repeating_intervals'>repeating interval</a>.
+</p>
+<p>A duration is written
+</p><br /><hr class="insert" />
+<a name="p30d-30-dayspt5m-5-minutesp1m14dt3h5m23s-1-month-14-days-3-hours-5-minutes-and-23-seconds"></a>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+P30D                      # 30 days
+PT5M                     # 5 minutes
+P1M14DT3H5M23S # 1 month 14 days 3 hours 5 minutes and 23 seconds
+</pre></div><table border="0" cellpadding="0" cellspacing="2" align="center"><tr><td align="center"><font face="monaco, MS Sans Serif" size="1"><b>&nbsp;Figure&nbsp;3&nbsp;</b></font><br /></td></tr></table><hr class="insert" />
+
+<p>Intervals are either 2 ISO Dates or an ISO date and a duration separated by the &lsquo;/&rsquo; character:
+</p><br /><hr class="insert" />
+<a name="t130000z2008-05-11t153000z-the-interval-between-2-datest130000zp1y2m10dt2h30m-the-interval-starting-at-a-date-and-finishing-after-a-durationp1y2m10dt2h30m2008-05-11t153000z-the-interval-starting-with-a-duration-and-finishing-at-a-given-datep1m-the-duration-starting-at-the-time-the-token-was-authorized"></a>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+2007-03-01T13:00:00Z/2008-05-11T15:30:00Z # The interval between 2 dates
+2007-03-01T13:00:00Z/P1Y2M10DT2H30M     # The interval starting at a date and finishing after a duration
+P1Y2M10DT2H30M/2008-05-11T15:30:00Z     # The interval starting with a duration and finishing at a given date
+P1M                                                             # The duration starting at the time the token was authorized.
+</pre></div><table border="0" cellpadding="0" cellspacing="2" align="center"><tr><td align="center"><font face="monaco, MS Sans Serif" size="1"><b>&nbsp;Figure&nbsp;4&nbsp;</b></font><br /></td></tr></table><hr class="insert" />
+
+<p>Repeating intervals by prefix one of the above intervals or durations with the letter &lsquo;R&rsquo; and an optional number specifying the amount of times to repeat:
+</p><br /><hr class="insert" />
+<a name="rp1m-repeat-once-a-monthr12p1m-repeat-12-times-once-a-monthrp1m2008-05-11t153000z-repeat-monthly-until-a-given-date"></a>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+RP1M                     # repeat once a month
+R12P1M                 # repeat 12 times once a month
+RP1M/2008-05-11T15:30:00Z  # repeat monthly until a given date
+</pre></div><table border="0" cellpadding="0" cellspacing="2" align="center"><tr><td align="center"><font face="monaco, MS Sans Serif" size="1"><b>&nbsp;Figure&nbsp;5&nbsp;</b></font><br /></td></tr></table><hr class="insert" />
+
+<p>By supporting a single parameter with any of the above durations/intervals/repeated intervals we can support a lot of different kinds of applications:
+</p>
+<p></p>
+<ul class="text">
+<li>Recurring payments (subscriptions) using the Repeated Intervals
+</li>
+<li>Daily spending limits on tokens using Repeated intervals similar to what debit cards have to day. eg. $300/day
+</li>
+<li>Request validity of a token using a simple duration
+</li>
+</ul>
+
+<a name="validity-request-error"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1.2"></a><h3>4.1.2.&nbsp;
+Validity Request Error</h3>
+
+<p>If a specified interval is not supported by service or user refuses to authorize the interval an <a href='http://tools.ietf.org/html/draft-ietf-oauth-v2-22#section-4.1.2.1'>OAuth2.0 Authorization error response</a> MUST be returned through redirection with the following error:
+</p>
+<p>error=unsupported_interval
+</p>
+<a name="response-1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.2"></a><h3>4.2.&nbsp;
 Response</h3>
 
-<p>Follows OAuth 2 response depending on response_type requested. <a class='info' href='#OAuth.2.0'>[OAuth.2.0]<span> (</span><span class='info'>Hammer-Lahav, E., Ed., Recordon, D., and D. Hardt, &ldquo;OAuth 2.0 Authorization Protocol,&rdquo; Jul&nbsp;2011.</span><span>)</span></a>
+<p>Follows OAuth 2 response depending on response_type requested. <a class='info' href='#I-D.ietf-oauth-v2'>[I&#8209;D.ietf&#8209;oauth&#8209;v2]<span> (</span><span class='info'>Hammer-Lahav, E., Recordon, D., and D. Hardt, &ldquo;The OAuth 2.0 Authorization Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a>
 </p>
 <a name="errors-1"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.2"></a><h3>4.2.&nbsp;
+<a name="rfc.section.4.3"></a><h3>4.3.&nbsp;
 Errors</h3>
 
-<p>Error types use OAuth 2.0&rsquo;s error codes. <a class='info' href='#OAuth.2.0'>[OAuth.2.0]<span> (</span><span class='info'>Hammer-Lahav, E., Ed., Recordon, D., and D. Hardt, &ldquo;OAuth 2.0 Authorization Protocol,&rdquo; Jul&nbsp;2011.</span><span>)</span></a>
+<p>Error types use OAuth 2.0&rsquo;s error codes. <a class='info' href='#I-D.ietf-oauth-v2'>[I&#8209;D.ietf&#8209;oauth&#8209;v2]<span> (</span><span class='info'>Hammer-Lahav, E., Recordon, D., and D. Hardt, &ldquo;The OAuth 2.0 Authorization Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a>
 </p>
 <a name="transfer-1"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -742,7 +864,11 @@ Transfer</h3>
 
 <p>A transfer consists of a HTTP POST to the asset url by a 3rd party application on behalf of the Transferer.
 </p>
-<p>The Application should have an OAuth 2.0 access token issued as defined in the OAuth 2.0 draft section 5.
+<p>The Application MUST have an OAuth 2.0 access token issued as defined in the <a class='info' href='#I-D.ietf-oauth-v2'>[I&#8209;D.ietf&#8209;oauth&#8209;v2]<span> (</span><span class='info'>Hammer-Lahav, E., Recordon, D., and D. Hardt, &ldquo;The OAuth 2.0 Authorization Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a> section 7.
+</p>
+<p>The asset provider SHOULD support the <a class='info' href='#I-D.ietf-oauth-v2-bearer'>[I&#8209;D.ietf&#8209;oauth&#8209;v2&#8209;bearer]<span> (</span><span class='info'>Jones, M., Hardt, D., and D. Recordon, &ldquo;The OAuth 2.0 Authorization Protocol: Bearer Tokens,&rdquo; December&nbsp;2011.</span><span>)</span></a> Access Token type and can support other access token such as <a class='info' href='#I-D.ietf-oauth-v2-http-mac'>[I&#8209;D.ietf&#8209;oauth&#8209;v2&#8209;http&#8209;mac]<span> (</span><span class='info'>Hammer-Lahav, E., Barth, A., and B. Adida, &ldquo;HTTP Authentication: MAC Access Authentication,&rdquo; May&nbsp;2011.</span><span>)</span></a>.
+</p>
+<p>The Transfer MUST be created using HTTPS when using <a class='info' href='#I-D.ietf-oauth-v2-bearer'>[I&#8209;D.ietf&#8209;oauth&#8209;v2&#8209;bearer]<span> (</span><span class='info'>Jones, M., Hardt, D., and D. Recordon, &ldquo;The OAuth 2.0 Authorization Protocol: Bearer Tokens,&rdquo; December&nbsp;2011.</span><span>)</span></a> and other unsigned access tokens.
 </p><br /><hr class="insert" />
 <a name="post-usd-http11host-paymeauthorization-bearer-vf9dft4qmttobillexamplecomamount10000notemilk"></a>
 <div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
@@ -751,7 +877,7 @@ Host: pay.me
 Authorization: Bearer vF9dft4qmT
 
 to=bill@example.com&amp;amount=100.00&amp;note=Milk
-</pre></div><table border="0" cellpadding="0" cellspacing="2" align="center"><tr><td align="center"><font face="monaco, MS Sans Serif" size="1"><b>&nbsp;Figure&nbsp;3&nbsp;</b></font><br /></td></tr></table><hr class="insert" />
+</pre></div><table border="0" cellpadding="0" cellspacing="2" align="center"><tr><td align="center"><font face="monaco, MS Sans Serif" size="1"><b>&nbsp;Figure&nbsp;6&nbsp;</b></font><br /></td></tr></table><hr class="insert" />
 
 <p>We use the following parameters from our common vocabulary in 1.6. All fields are optional:
 </p>
@@ -817,7 +943,7 @@ Asset Meta data</h3>
 GET /usd HTTP/1.1
 Host: pay.me
 Accept: application/json
-</pre></div><table border="0" cellpadding="0" cellspacing="2" align="center"><tr><td align="center"><font face="monaco, MS Sans Serif" size="1"><b>&nbsp;Figure&nbsp;4&nbsp;</b></font><br /></td></tr></table><hr class="insert" />
+</pre></div><table border="0" cellpadding="0" cellspacing="2" align="center"><tr><td align="center"><font face="monaco, MS Sans Serif" size="1"><b>&nbsp;Figure&nbsp;7&nbsp;</b></font><br /></td></tr></table><hr class="insert" />
 
 <p>This returns a json hash of meta information about the asset.
 </p>
@@ -829,21 +955,50 @@ Accept: application/json
 </li>
 </ul>
 
-<p>Further opentransact specific parameters could be:
+<p>The minimal asset meta data is:
+</p><br /><hr class="insert" />
+<a name="namepay-me"></a>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+{
+  "name":"Pay Me"
+}
+</pre></div><table border="0" cellpadding="0" cellspacing="2" align="center"><tr><td align="center"><font face="monaco, MS Sans Serif" size="1"><b>&nbsp;Figure&nbsp;8&nbsp;</b></font><br /></td></tr></table><hr class="insert" />
+
+<p>Further OpenTransact specific parameters could be:
 </p>
 <p></p>
 <ul class="text">
 <li>default_amount - The default amount transfered if an amount is not specified in a transfer
 </li>
-<li>provider_url - The provider of the asset&rsquo;s home page
+<li>provider_uri - The provider of the asset&rsquo;s home page
 </li>
 <li>description - Short description
 </li>
-<li>logo_url - Image url for Assets logo
+<li>logo_uri - Image url for Assets logo
 </li>
 <li>unit - ISO currency unit of asset if monetary or other such as (minute, gram, point etc)
 </li>
+<li>derivatives - a list of derivative assets supported by this server (see below)
+</li>
 </ul>
+
+<p>Example:
+</p><br /><hr class="insert" />
+<a name="namepay-medefaultamount10providerurihttppaysamplecomlogourihttppaysamplecomlogopngunitusdderivatives-reservehttppaysamplecomreservessubscriptionhttppaysamplecomsubscriptionsexchangehttppaysamplecomexchange"></a>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+{
+  "name":"Pay Me",
+  "default_amount":1.0,
+  "provider_uri":"http://pay.sample.com",
+  "logo_uri":"http://pay.sample.com/logo.png",
+  "unit":"USD",
+  "derivatives": [
+    {"reserve":"http:/pay.sample.com/reserves"},
+    {"subscription":"http:/pay.sample.com/subscriptions"},
+    {"exchange":"http:/pay.sample.com/exchange"}
+  ]
+}
+</pre></div><table border="0" cellpadding="0" cellspacing="2" align="center"><tr><td align="center"><font face="monaco, MS Sans Serif" size="1"><b>&nbsp;Figure&nbsp;9&nbsp;</b></font><br /></td></tr></table><hr class="insert" />
 
 <p>Asset services can provide further information more specific to their particular asset type.
 </p>
@@ -859,20 +1014,63 @@ Accept: application/json
 
 <p>For tokens obtained through a Transfer Authentication this should reflect the remaining balance of the authorized amount.
 </p>
-<p>If tokens scope allows access to accounts transaction history, the transaction history should be included here:
+<a name="transaction-history"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7.1"></a><h3>7.1.&nbsp;
+Transaction history</h3>
+
+<p>If tokens scope allows access to accounts transaction history a url to the transaction history or a transaction history SHOULD be included here:
 </p>
 <p></p>
 <ul class="text">
+<li>transactions_uri - URI to list of transactions
+</li>
 <li>transactions - array of receipts
 </li>
 </ul>
 
+<a name="derivative-assets-1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7.2"></a><h3>7.2.&nbsp;
+Derivative assets</h3>
+
+<p>If an asset has derivative assets they SHOULD be listed in the optional derivatives list:
+</p><br /><hr class="insert" />
+<a name="name-pay-mederivatives-reservehttppaysamplecomreservessubscriptionhttppaysamplecomsubscriptionsexchangehttppaysamplecomexchange"></a>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+{
+  "name": "Pay Me",
+  "derivatives": [
+    {"reserve":"http:/pay.sample.com/reserves"},
+    {"subscription":"http:/pay.sample.com/subscriptions"},
+    {"exchange":"http:/pay.sample.com/exchange"}
+  ]
+}
+</pre></div><table border="0" cellpadding="0" cellspacing="2" align="center"><tr><td align="center"><font face="monaco, MS Sans Serif" size="1"><b>&nbsp;Figure&nbsp;10&nbsp;</b></font><br /></td></tr></table><hr class="insert" />
+
+<p>The OpenTransact group will maintain a list of recipes that may be further standardized.
+</p>
+<a name="security-considerations"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8"></a><h3>8.&nbsp;
+Security Considerations</h3>
+
+<p>The security of OpenTransact is achieved by it&rsquo;s use of <a class='info' href='#I-D.ietf-oauth-v2'>[I&#8209;D.ietf&#8209;oauth&#8209;v2]<span> (</span><span class='info'>Hammer-Lahav, E., Recordon, D., and D. Hardt, &ldquo;The OAuth 2.0 Authorization Protocol,&rdquo; September&nbsp;2011.</span><span>)</span></a>. Please see its <a href='http://tools.ietf.org/html/draft-ietf-oauth-v2-22#section-10'>security discussion</a> and a more thorough discussion in <a class='info' href='#I-D.ietf-oauth-v2-threatmodel'>[I&#8209;D.ietf&#8209;oauth&#8209;v2&#8209;threatmodel]<span> (</span><span class='info'>Lodderstedt, T., McGloin, M., and P. Hunt, &ldquo;OAuth 2.0 Threat Model and Security Considerations,&rdquo; October&nbsp;2011.</span><span>)</span></a>.
+</p>
 <a name="rfc.references1"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>8.&nbsp;Normative References</h3>
+<h3>9.&nbsp;Normative References</h3>
 <table width="99%" border="0">
-<tr><td class="author-text" valign="top"><a name="OAuth.2.0">[OAuth.2.0]</a></td>
-<td class="author-text">Hammer-Lahav, E., Ed., Recordon, D., and D. Hardt, &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2">OAuth 2.0 Authorization Protocol</a>,&rdquo; Jul&nbsp;2011.</td></tr>
+<tr><td class="author-text" valign="top"><a name="I-D.ietf-oauth-v2">[I-D.ietf-oauth-v2]</a></td>
+<td class="author-text">Hammer-Lahav, E., Recordon, D., and D. Hardt, &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-22">The OAuth 2.0 Authorization Protocol</a>,&rdquo; draft-ietf-oauth-v2-22 (work in progress), September&nbsp;2011 (<a href="http://www.ietf.org/internet-drafts/draft-ietf-oauth-v2-22.txt">TXT</a>, <a href="http://www.ietf.org/internet-drafts/draft-ietf-oauth-v2-22.pdf">PDF</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="I-D.ietf-oauth-v2-bearer">[I-D.ietf-oauth-v2-bearer]</a></td>
+<td class="author-text">Jones, M., Hardt, D., and D. Recordon, &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-bearer-15">The OAuth 2.0 Authorization Protocol: Bearer Tokens</a>,&rdquo; draft-ietf-oauth-v2-bearer-15 (work in progress), December&nbsp;2011 (<a href="http://www.ietf.org/internet-drafts/draft-ietf-oauth-v2-bearer-15.txt">TXT</a>, <a href="http://www.ietf.org/internet-drafts/draft-ietf-oauth-v2-bearer-15.pdf">PDF</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="I-D.ietf-oauth-v2-http-mac">[I-D.ietf-oauth-v2-http-mac]</a></td>
+<td class="author-text">Hammer-Lahav, E., Barth, A., and B. Adida, &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-http-mac-00">HTTP Authentication: MAC Access Authentication</a>,&rdquo; draft-ietf-oauth-v2-http-mac-00 (work in progress), May&nbsp;2011 (<a href="http://www.ietf.org/internet-drafts/draft-ietf-oauth-v2-http-mac-00.txt">TXT</a>, <a href="http://www.ietf.org/internet-drafts/draft-ietf-oauth-v2-http-mac-00.pdf">PDF</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="I-D.ietf-oauth-v2-threatmodel">[I-D.ietf-oauth-v2-threatmodel]</a></td>
+<td class="author-text">Lodderstedt, T., McGloin, M., and P. Hunt, &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-threatmodel-01">OAuth 2.0 Threat Model and Security Considerations</a>,&rdquo; draft-ietf-oauth-v2-threatmodel-01 (work in progress), October&nbsp;2011 (<a href="http://www.ietf.org/internet-drafts/draft-ietf-oauth-v2-threatmodel-01.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="ISO.8601.1988">[ISO.8601.1988]</a></td>
+<td class="author-text">International Organization for Standardization, &ldquo;Data elements and interchange formats - Information interchange - Representation of dates and times,&rdquo; ISO&nbsp;Standard 8601, June&nbsp;1988.</td></tr>
 </table>
 
 <a name="rfc.authors"></a><br /><hr />
@@ -897,5 +1095,12 @@ Accept: application/json
 <td class="author-text">Tom Brown</td></tr>
 <tr><td class="author" align="right">Email:&nbsp;</td>
 <td class="author-text"><a href="mailto:herestomwiththeweather@gmail.com">herestomwiththeweather@gmail.com</a></td></tr>
+<tr cellpadding="3"><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">David Nicol</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">TipJar</td></tr>
+<tr><td class="author" align="right">Email:&nbsp;</td>
+<td class="author-text"><a href="mailto:davidnicol@gmail.com">davidnicol@gmail.com</a></td></tr>
 </table>
 </body></html>
