@@ -31,3 +31,8 @@ How to use OpenTransact to exchange one asset for another.
 
 TBD
 
+## Subscriptions
+
+How to use OpenTransact to create a subscription based service.
+
+TBD
