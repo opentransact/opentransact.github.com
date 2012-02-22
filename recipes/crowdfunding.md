@@ -34,7 +34,7 @@ We will handle both cases here:
 1. Alice registers her project on Crowdstarter site and decides she needs $10,000
 2. CrowdStarter approves the project and sets an expiration date 2 months in the future
 3. Bob views Alice's project on CrowdStarter's site.
-4. <span id="pledge">Bob clicks the Pledge button and enters an amount ($20) he wants to pledge.</span>
+4. Bob clicks the <span id="pledge">Pledge button and enters an amount ($20) he wants to pledge.</span>
 5. The Crowdfunding site generates an [OpenTransact Transfer Authorization](/core.html#transfer-authorization-1)  link to Bob's payment provider PayMe.
 6. Bob clicks the link and goes to PayMe
 7. PayMe asks Bob if he wants to approve the request for $20 valid until 2 months in the future.
