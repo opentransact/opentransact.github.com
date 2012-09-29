@@ -7,7 +7,7 @@ OpenTransact supports many different use cases. Here are some common ones:
 
 <a name="basic"></a>
 
-h3. Basic Transfer/Payment
+h3(#basictransfer). Basic Transfer/Payment
 
 Strictly speaking this isn't part of the standard, but every Asset Provider needs a simple interface like this for basic transfers.
 
@@ -22,7 +22,7 @@ User needs to transfer funds to another account holder of the same asset type.
 
 <a name="simple"></a>
 
-h3. Transfer Request
+h3(#transferrequest). Transfer Request
 
 User makes a one off purchase on a website. Similar to PayPal payments.
 
@@ -42,7 +42,7 @@ User presses confirm payment button and funds are transfered to merchants accoun
 
 <a name="subscription"></a>
 
-h3. Subscription Payment
+h3(#subscription). Subscription Payment
 
 User subscribes to a web service paying $19.99/month.
 
